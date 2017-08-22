@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Timbra Cartellini</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_username">Username</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_entra">Timbra entrata</string>
+    <string name="action_uscita">Timbra uscita</string>
+    <string name="action_statistiche">Visualizza Riepilogo</string>
+    <string name="error_incorrect_password">Password non corretta</string>
+    <string name="error_field_required">Questo campo non può essere lasciato vuoto</string>
+    <string name="username_errato">L\'username inserito non esiste</string>
+    <string-array name="Nome_Scuola">
+        <item>Politecnico di Torino</item>
+        <item>San Francesco d\'Assisi - Torino</item>
+        <item>Scuola Media Colombo - Torino</item>
+        <item>Scuola Media Random - Messina</item>
+
+    </string-array>
+    <string name="title_activity_splash_screen">SplashScreen</string>
+
+</resources>

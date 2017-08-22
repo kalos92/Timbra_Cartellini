@@ -1,0 +1,155 @@
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/white">
+
+    <TextClock
+        android:id="@+id/clock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="20dp"
+
+        android:textSize="20sp"
+        android:textColor="@color/hint"
+        android:textAlignment="center"
+        android:format24Hour="dd.MM.yyyy '-' HH:mm:ss "/>
+    <EditText
+        android:id="@+id/editext_username"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_margin="50dp"
+        android:hint="@string/prompt_username"
+        android:background="@color/blue_white"
+        android:singleLine="true"
+        android:maxLines="1"
+        android:textColor="@color/text"
+        android:textColorHint="@color/hint"
+        android:padding="10dp"
+
+        />
+
+    <EditText
+        android:id="@+id/editext_password"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_below="@id/editext_username"
+        android:hint="@string/prompt_password"
+        android:background="@color/blue_white"
+        android:singleLine="true"
+        android:maxLines="1"
+        android:textColor="@color/text"
+        android:textColorHint="@color/hint"
+        android:padding="10dp"
+
+
+        />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/editext_password"
+        android:id="@+id/nome_scuola"
+        android:entries="@array/Nome_Scuola">
+
+    </Spinner>
+
+    <Button
+        android:id="@+id/btnEntra"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="35dp"
+
+        android:layout_below="@id/nome_scuola"
+        android:background="@color/colorPrimaryDark"
+        android:text="@string/action_entra"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="15dp" />
+    <Button
+        android:id="@+id/btnEsci"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_below="@id/btnEntra"
+        android:background="@color/colorPrimaryDark"
+        android:text="@string/action_uscita"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="15dp" />
+
+    <Button
+        android:layout_marginTop="10dp"
+        android:id="@+id/btnStatiche"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_below="@id/btnEsci"
+        android:background="@color/colorPrimaryDark"
+        android:text="@string/action_statistiche"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="15dp" />
+
+    <TextView
+        android:id="@+id/longitudeTextGPS"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="longitude"
+        android:textSize="20sp"
+        android:layout_alignBaseline="@+id/longitudeValueGPS"
+        android:layout_alignBottom="@+id/longitudeValueGPS"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:id="@+id/longitudeValueGPS"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnStatiche"
+        android:layout_toRightOf="@id/longitudeTextGPS"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:text="0.0000"
+        android:textSize="20sp"
+
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:id="@+id/latitudeTextGPS"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/longitudeTextGPS"
+        android:text="latitude"
+        android:textSize="20sp"
+
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:id="@+id/latitudeValueGPS"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/longitudeValueGPS"
+        android:layout_toRightOf="@id/longitudeTextGPS"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:text="0.0000"
+        android:textSize="20sp"
+        android:layout_centerHorizontal="true"/>
+
+
+
+</RelativeLayout>
+
+
+
