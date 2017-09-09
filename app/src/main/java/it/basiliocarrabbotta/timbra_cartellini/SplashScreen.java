@@ -42,7 +42,7 @@ public class SplashScreen extends AppCompatActivity {
         locationManager = (LocationManager) getSystemService(getBaseContext().LOCATION_SERVICE);
 
 
-        if (!EnableGPSIfPossible()) {
+        if (!EnableGPSIfPossible()){
 
             if (criteria != null) {
                 provider = locationManager.getBestProvider(criteria, true);
