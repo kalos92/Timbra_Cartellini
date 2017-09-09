@@ -57,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-    private LocationManager locationManager;
+
     private double longitudeGPS, latitudeGPS;
     private TextView longitudeValueGPS, latitudeValueGPS;
     private Button timbra_entrata, timbra_uscita, statistiche;
@@ -68,8 +68,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        locationManager = (LocationManager) getSystemService(getBaseContext().LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListenerGPS);
+
 
 
         longitudeValueGPS = (TextView) findViewById(R.id.longitudeValueGPS);
@@ -80,8 +79,6 @@ public class LoginActivity extends AppCompatActivity {
         relativeLayout = (RelativeLayout) findViewById(R.id.rel);
 
 
-        if (!isLocationEnabled())
-            showAlert();
 
 
 
@@ -131,32 +128,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    private boolean isLocationEnabled() {
-        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
-            return true;
-        else
-            return false;
-    }
 
-    private void showAlert() {
-        final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle("Enable Location")
-                .setMessage("Il GPS non è attivo, attivarlo per utilizzare questa applicazione.")
-                .setPositiveButton("IMPOSTAZIONI GPS", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-                        Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                        startActivity(myIntent);
-                    }
-                })
-                .setNegativeButton("Annulla", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-                        finish();
-                    }
-                });
-        dialog.show();
-    }
 
     private final LocationListener locationListenerGPS = new LocationListener() {
         public void onLocationChanged(Location location) {

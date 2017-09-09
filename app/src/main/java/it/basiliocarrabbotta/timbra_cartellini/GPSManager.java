@@ -11,6 +11,11 @@ import android.os.Bundle;
 
 public class GPSManager implements LocationListener {
 
+    double GPSlat= 0.0d;
+    double GPSlng= 0.0d;
+
+
+
     @Override
     public void onLocationChanged(Location location) {
 
@@ -30,4 +35,18 @@ public class GPSManager implements LocationListener {
     public void onProviderDisabled(String provider) {
 
     }
+
+
+    public double getGPSlat()
+    {
+        return GPSlat;
+    }
+
+
+    public double getGPSlng()
+    {
+        return GPSlng;
+    }
+
+
 }
