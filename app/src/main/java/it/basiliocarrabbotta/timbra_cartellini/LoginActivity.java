@@ -12,6 +12,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
@@ -38,6 +39,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,15 +55,18 @@ public class LoginActivity extends AppCompatActivity {
 
 
     // UI references.
-    private AutoCompleteTextView mEmailView;
-    private EditText mPasswordView;
-    private View mProgressView;
-    private View mLoginFormView;
 
     private double longitudeGPS, latitudeGPS;
     private TextView longitudeValueGPS, latitudeValueGPS;
     private Button timbra_entrata, timbra_uscita, statistiche;
-    private RelativeLayout relativeLayout;
+    private SessionManager manager;
+    private CoordinatorLayout coordinatorLayout;
+    private int time;
+    private TextClock textClock;
+    private EditText username,pwd;
+    private String ID;
+    private Boolean id_setted = false;
+    private Bundle bundle;
 
 
     @Override
@@ -69,89 +74,110 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        Bundle extra = getIntent().getExtras();
+        if(extra!= null) {
 
+            latitudeGPS = (double) extra.get("Lat");
+            longitudeGPS = (double) extra.get("Lng");
 
-        longitudeValueGPS = (TextView) findViewById(R.id.longitudeValueGPS);
-        latitudeValueGPS = (TextView) findViewById(R.id.latitudeValueGPS);
+        }
+
+        manager = new SessionManager(getBaseContext());
         timbra_entrata = (Button) findViewById(R.id.btnEntra);
         timbra_uscita = (Button) findViewById(R.id.btnEsci);
         statistiche = (Button) findViewById(R.id.btnStatiche);
-        relativeLayout = (RelativeLayout) findViewById(R.id.rel);
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator);
+        username = (EditText) findViewById(R.id.editext_username);
+        pwd = (EditText) findViewById(R.id.editext_password);
+        textClock = (TextClock) findViewById(R.id.clock);
 
+        ID = manager.getID();
 
+        id_setted = ID != null? true:false;
 
-
-
-
-        ArrayList<Coordinates> CasaNonno = new ArrayList<>();
-
-        Coordinates p1 = new Coordinates(38.266998, 15.596746);
-        Coordinates p2 = new Coordinates(38.267150, 15.596779);
-        Coordinates p3 = new Coordinates(38.267103, 15.597053);
-        Coordinates p4 = new Coordinates(38.266958, 15.597013);
-        Coordinates p5 = new Coordinates(38.266998, 15.596746);
-
-        CasaNonno.add(p1);
-        CasaNonno.add(p2);
-        CasaNonno.add(p3);
-        CasaNonno.add(p4);
-        CasaNonno.add(p5);
-
-
-        final Poligon Casanonno_pol = new Poligon(CasaNonno);
-
-        Coordinates p6 = new Coordinates(38.267062, 15.596888);
-        if (Casanonno_pol.InsidePolygon(p6))
-            Log.d("GPS LOCATOR", "Sta dentro");
-        else
-            Log.d("GPS LOCATOR", "Molto male");
-
-        Coordinates p7 = new Coordinates(38.267030, 15.596386);
-        if (!Casanonno_pol.InsidePolygon(p7)) ;
-        Log.d("GPS LOCATOR", " Test superati");
+        longitudeValueGPS.setText(String.valueOf(longitudeGPS));
+        latitudeValueGPS.setText(String.valueOf(latitudeGPS));
 
         timbra_entrata.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ActivityCompat.checkSelfPermission(LoginActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(LoginActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(getBaseContext(),"Permission not granted",Toast.LENGTH_SHORT).show();
+
+                if(username.getText().toString().equals("") || pwd.getText().toString().equals("")){
+                    Snackbar.make(coordinatorLayout,"Non hai inserito i dati richiesti",Snackbar.LENGTH_LONG).show();
                     return;
                 }
-                else{
-                    Coordinates p8 = new Coordinates(latitudeGPS,longitudeGPS);
-                    if(Casanonno_pol.InsidePolygon(p8))
-                        Toast.makeText(getBaseContext(),"Sei dentro la casa del nonno", Toast.LENGTH_LONG).show();
 
 
-                }}
+                bundle= new Bundle();
+                bundle.putBoolean("ID_SETTED",id_setted);
+                bundle.putDouble("LAT",latitudeGPS);
+                bundle.putDouble("LNG",longitudeGPS);
+                bundle.putString("USERNAME",username.getText().toString());
+                bundle.putString("PASSWORD",pwd.getText().toString());
+                bundle.putString("TIPO","Entrata");
+                Intent i = new Intent(LoginActivity.this,Causali.class);
+                i.putExtras(bundle);
+                startActivity(i);
+                finish();
+            }
         });
+
+        timbra_uscita.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(username.getText().toString().equals("") || pwd.getText().toString().equals("")){
+                    Snackbar.make(coordinatorLayout,"Non hai inserito i dati richiesti",Snackbar.LENGTH_LONG).show();
+                    return;
+                }
+
+
+                bundle= new Bundle();
+                bundle.putBoolean("ID_SETTED",id_setted);
+                bundle.putDouble("LAT",latitudeGPS);
+                bundle.putDouble("LNG",longitudeGPS);
+                bundle.putString("USERNAME",username.getText().toString());
+                bundle.putString("PASSWORD",pwd.getText().toString());
+                bundle.putString("TIPO","Uscita");
+                Intent i = new Intent(LoginActivity.this,Causali.class);
+                i.putExtras(bundle);
+                startActivity(i);
+                finish();
+            }
+        });
+        statistiche.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(username.getText().toString().equals("") || pwd.getText().toString().equals("")){
+                    Snackbar.make(coordinatorLayout,"Non hai inserito i dati richiesti",Snackbar.LENGTH_LONG).show();
+                    return;
+                }
+
+
+                bundle= new Bundle();
+                bundle.putBoolean("ID_SETTED",id_setted);
+                bundle.putDouble("LAT",latitudeGPS);
+                bundle.putDouble("LNG",longitudeGPS);
+                bundle.putString("USERNAME",username.getText().toString());
+                bundle.putString("PASSWORD",pwd.getText().toString());
+                bundle.putString("TIPO","Entrata");
+                Intent i = new Intent(LoginActivity.this,Report.class);
+                i.putExtras(bundle);
+                startActivity(i);
+                finish();
+            }
+        });
+
+
+
     }
 
 
 
 
-    private final LocationListener locationListenerGPS = new LocationListener() {
-        public void onLocationChanged(Location location) {
-            longitudeGPS = location.getLongitude();
-            latitudeGPS = location.getLatitude();
 
 
-            longitudeValueGPS.setText(longitudeGPS + "");
-            latitudeValueGPS.setText(latitudeGPS + "");
-            Toast.makeText(LoginActivity.this, "GPS Provider update", Toast.LENGTH_SHORT).show();
-
-
-        }
-        @Override
-        public void onStatusChanged(String s, int i, Bundle bundle) {
-        }
-        @Override
-        public void onProviderEnabled(String s) {
-        }
-        @Override
-        public void onProviderDisabled(String s) {
-        }
-    };
 
 
 

@@ -5,21 +5,36 @@ import android.location.LocationListener;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 /**
  * Created by Kalos on 22/08/2017.
  */
 
-public class NETWORKManager implements LocationListener {
+public class NETWORKManager implements LocationListener, Subject {
 
 
     private double NETlat= 0.0d;
     private double NETlng= 0.0d;
-    private SplashScreen sp;
+    private static NETWORKManager INSTANCE = null;
+    private ArrayList<RepositoryObserver> Observers;
 
-    public NETWORKManager(SplashScreen sp){
-
-        this.sp=sp;
+    private NETWORKManager(){  //Con un Singleton ho la certezza che questa classe funzioni e venga creata una sola volta
+        Observers= new ArrayList<>();
     }
+
+    public static NETWORKManager getInstance() {
+        if(INSTANCE == null) {
+            INSTANCE = new NETWORKManager();
+        }
+        return INSTANCE;
+    }
+
+    public static void DestroyNETMGR(){
+        INSTANCE = null;
+    }
+
+
 
     @Override
     public void onLocationChanged(Location location) {
@@ -27,7 +42,8 @@ public class NETWORKManager implements LocationListener {
         NETlng = location.getLongitude();
         NETlat = location.getLatitude();
 
-        Toast.makeText(sp, String.valueOf(NETlat)+String.valueOf( NETlng), Toast.LENGTH_SHORT).show();
+
+         notifyObservers();
 
     }
 
@@ -58,6 +74,27 @@ public class NETWORKManager implements LocationListener {
         return NETlng;
     }
 
+
+    @Override
+    public void registerObserver(RepositoryObserver repositoryObserver) {
+        if(!Observers.contains(repositoryObserver)) {
+            Observers.add(repositoryObserver);
+        }
+    }
+
+    @Override
+    public void removeObserver(RepositoryObserver repositoryObserver) {
+        if(Observers.contains(repositoryObserver)) {
+            Observers.remove(repositoryObserver);
+        }
+    }
+
+    @Override
+    public void notifyObservers() {
+        for (RepositoryObserver observer: Observers) {
+            observer.onUserDataChanged(NETlng, NETlat);
+        }
+    }
 
 
 }

@@ -7,30 +7,19 @@ import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-
 import android.support.v7.app.AppCompatActivity;
-
-import android.text.TextUtils;
+import android.os.Bundle;
 import android.util.Log;
-
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
+public class SendingData_Activity extends AppCompatActivity implements RepositoryObserver {
 
-
-public class SplashScreen extends AppCompatActivity implements RepositoryObserver {
-
-    public static final String TAG = SplashScreen.class.getSimpleName();
     private static final int PERMISSION_ACCESS_LOCATION = 144;
     private CoordinatorLayout cLayout;
     private LocationManager locationManager;
@@ -38,14 +27,12 @@ public class SplashScreen extends AppCompatActivity implements RepositoryObserve
     private NETWORKManager NETmgr;
     private static final int LONG_DELAY = 3500;
     private TextView dot1,dot2,dot3;
-    private RequestQueue requestQueue;
-
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.content_splash_screen);
+        setContentView(R.layout.activity_sendingdata);
         cLayout = (CoordinatorLayout) findViewById(R.id.coordinator);
         locationManager = (LocationManager) getSystemService(getBaseContext().LOCATION_SERVICE);
         ConnectivityManager cm = (ConnectivityManager) getBaseContext().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -102,7 +89,7 @@ public class SplashScreen extends AppCompatActivity implements RepositoryObserve
             timer.start();
         }
 
-}
+    }
 
 
     @Override
@@ -110,7 +97,7 @@ public class SplashScreen extends AppCompatActivity implements RepositoryObserve
         Toast.makeText(this,"HO OSSERVATO IL CAMBIAMENTO LNG: " +String.valueOf(NETlng)+" LAT: "+ String.valueOf(NETlat), Toast.LENGTH_LONG ).show();
         Log.d("COORDINATE", String.valueOf(NETlng)+" " +String.valueOf( NETlat));
         locationManager.removeUpdates(NETmgr);
-        Intent data = new Intent(SplashScreen.this,LoginActivity.class);
+        Intent data = new Intent(SendingData_Activity.this,LoginActivity.class);
         data.putExtra("Lat",NETlat);
         data.putExtra("Lng",NETlng);
         startActivity(data);
@@ -143,37 +130,4 @@ public class SplashScreen extends AppCompatActivity implements RepositoryObserve
     }
 
 
-    public RequestQueue getRequestQueue() {
-        if (requestQueue == null) {
-            requestQueue = Volley.newRequestQueue(getApplicationContext());
-        }
-
-        return requestQueue;
-    }
-
-    public <T> void addToRequestQueue(Request<T> req, String tag) {
-        req.setTag(TextUtils.isEmpty(tag) ? TAG : tag);
-        getRequestQueue().add(req);
-    }
-
-    public <T> void addToRequestQueue(Request<T> req) {
-        req.setTag(TAG);
-        getRequestQueue().add(req);
-    }
-
-    public void cancelPendingRequests(Object tag) {
-        if (requestQueue != null) {
-            requestQueue.cancelAll(tag);
-        }
-    }
-
-
-    }
-
-
-//LONGITUDINE X
-//LATITUDINE Y
-
-//STANDARD GOOGLE = NETlat + NETlng
-
-//45.0189677 - 7.6143349
+}

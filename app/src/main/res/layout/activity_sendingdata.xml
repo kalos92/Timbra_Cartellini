@@ -26,23 +26,12 @@
             android:layout_below="@+id/logo"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="26dp"
-            android:text="Caricamento"
+            android:text="Sto inviando i dati non chiudere l'applicazione"
             android:textAlignment="center"
             android:textColor="@color/hint"
             android:textSize="30sp" />
 
-        <TextView
-            android:id="@+id/dot1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/welcome_text"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="6dp"
-            android:layout_toLeftOf="@id/dot2"
-            android:text="."
-            android:textAlignment="center"
-            android:textColor="@color/hint"
-            android:textSize="50sp" />
+
 
         <TextView
             android:id="@+id/dot2"
@@ -58,6 +47,18 @@
             android:textSize="50sp" />
 
         <TextView
+            android:id="@+id/dot1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/welcome_text"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="6dp"
+            android:layout_toLeftOf="@id/dot2"
+            android:text="."
+            android:textAlignment="center"
+            android:textColor="@color/hint"
+            android:textSize="50sp" />
+        <TextView
             android:id="@+id/dot3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -69,13 +70,14 @@
             android:textAlignment="center"
             android:textColor="@color/hint"
             android:textSize="50sp" />
+
         <ProgressBar
             android:id="@+id/loading_spinner"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="78dp"
+            android:layout_marginBottom="50dp"
 
             android:indeterminate="true"
 
@@ -83,4 +85,3 @@
     </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>
-

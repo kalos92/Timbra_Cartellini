@@ -18,5 +18,7 @@
 
     </string-array>
     <string name="title_activity_splash_screen">SplashScreen</string>
+    <string name="title_activity_causali">Causali</string>
+    <string name="title_activity_report">Report</string>
 
 </resources>

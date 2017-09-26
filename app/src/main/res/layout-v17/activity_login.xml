@@ -1,7 +1,12 @@
+<android.support.design.widget.CoordinatorLayout
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:id="@+id/coordinator"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+
     android:background="@color/white">
 
     <TextClock
@@ -12,7 +17,6 @@
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginBottom="20dp"
-
         android:textSize="20sp"
         android:textColor="@color/hint"
         android:textAlignment="center"
@@ -29,7 +33,7 @@
         android:textColor="@color/text"
         android:textColorHint="@color/hint"
         android:padding="10dp"
-
+        android:maxLength="32"
         />
 
     <EditText
@@ -46,11 +50,13 @@
         android:textColor="@color/text"
         android:textColorHint="@color/hint"
         android:padding="10dp"
+        android:maxLength="32"
+
 
 
         />
 
-    <Spinner
+    <!--Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="50dp"
@@ -60,7 +66,7 @@
         android:id="@+id/nome_scuola"
         android:entries="@array/Nome_Scuola">
 
-    </Spinner>
+    </Spinner-->
 
     <Button
         android:id="@+id/btnEntra"
@@ -69,9 +75,9 @@
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
         android:layout_marginTop="35dp"
-
         android:layout_below="@id/nome_scuola"
-        android:background="@color/colorPrimaryDark"
+        android:clickable="true"
+        android:background="@drawable/ripple"
         android:text="@string/action_entra"
         android:textAllCaps="false"
         android:textColor="@color/white"
@@ -84,7 +90,8 @@
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
         android:layout_below="@id/btnEntra"
-        android:background="@color/colorPrimaryDark"
+        android:clickable="true"
+        android:background="@drawable/ripple"
         android:text="@string/action_uscita"
         android:textAllCaps="false"
         android:textColor="@color/white"
@@ -98,58 +105,65 @@
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
         android:layout_below="@id/btnEsci"
-        android:background="@color/colorPrimaryDark"
+        android:clickable="true"
+        android:background="@drawable/ripple"
         android:text="@string/action_statistiche"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="15dp" />
 
     <TextView
-        android:id="@+id/longitudeTextGPS"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="longitude"
-        android:textSize="20sp"
-        android:layout_alignBaseline="@+id/longitudeValueGPS"
-        android:layout_alignBottom="@+id/longitudeValueGPS"
-        android:layout_centerHorizontal="true"/>
-
-    <TextView
-        android:id="@+id/longitudeValueGPS"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/btnStatiche"
-        android:layout_toRightOf="@id/longitudeTextGPS"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:text="0.0000"
-        android:textSize="20sp"
-
-        android:layout_centerHorizontal="true"/>
-
-    <TextView
         android:id="@+id/latitudeTextGPS"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/longitudeTextGPS"
-        android:text="latitude"
+        android:layout_below="@id/btnStatiche"
+        android:text="Latitudine: "
         android:textSize="20sp"
-
-        android:layout_centerHorizontal="true"/>
+       android:layout_marginLeft="50dp"
+        android:layout_marginTop="5dp"/>
 
     <TextView
         android:id="@+id/latitudeValueGPS"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/longitudeValueGPS"
-        android:layout_toRightOf="@id/longitudeTextGPS"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:text="0.0000"
         android:textSize="20sp"
-        android:layout_centerHorizontal="true"/>
+        android:layout_alignBaseline="@+id/latitudeTextGPS"
+        android:layout_alignBottom="@+id/latitudeTextGPS"
+        android:layout_alignRight="@+id/btnStatiche"
+        android:layout_alignEnd="@+id/btnStatiche" />
+
+
+
+    <TextView
+        android:id="@+id/longitudeTextGPS"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/latitudeTextGPS"
+        android:text="Longitudine: "
+        android:textSize="20sp"
+        android:layout_alignBaseline="@+id/longitudeValueGPS"
+        android:layout_alignBottom="@+id/longitudeValueGPS"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="1dp"/>
+
+    <TextView
+        android:id="@+id/longitudeValueGPS"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:text="0.0000"
+        android:textSize="20sp"
+        android:layout_below="@+id/latitudeValueGPS"
+        android:layout_alignLeft="@+id/latitudeValueGPS"
+        android:layout_alignStart="@+id/latitudeValueGPS" />
+
 
 
 
 </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>
 
 
 
