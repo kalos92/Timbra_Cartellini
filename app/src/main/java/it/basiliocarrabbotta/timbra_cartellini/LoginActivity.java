@@ -44,6 +44,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static android.Manifest.permission.READ_CONTACTS;
@@ -67,12 +68,14 @@ public class LoginActivity extends AppCompatActivity {
     private String ID;
     private Boolean id_setted = false;
     private Bundle bundle;
-
+    private SQLiteHandler SQL;
+    private boolean logged = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
 
         Bundle extra = getIntent().getExtras();
         if(extra!= null) {
@@ -81,7 +84,7 @@ public class LoginActivity extends AppCompatActivity {
             longitudeGPS = (double) extra.get("Lng");
 
         }
-
+        SQL = new SQLiteHandler(getBaseContext());
         manager = new SessionManager(getBaseContext());
         timbra_entrata = (Button) findViewById(R.id.btnEntra);
         timbra_uscita = (Button) findViewById(R.id.btnEsci);
@@ -90,10 +93,12 @@ public class LoginActivity extends AppCompatActivity {
         username = (EditText) findViewById(R.id.editext_username);
         pwd = (EditText) findViewById(R.id.editext_password);
         textClock = (TextClock) findViewById(R.id.clock);
+        longitudeValueGPS = (TextView) findViewById(R.id.longitudeValueGPS);
+        latitudeValueGPS = (TextView) findViewById(R.id.latitudeValueGPS);
 
         ID = manager.getID();
 
-        id_setted = ID != null? true:false;
+        id_setted = ID != null;
 
         longitudeValueGPS.setText(String.valueOf(longitudeGPS));
         latitudeValueGPS.setText(String.valueOf(latitudeGPS));
@@ -102,23 +107,49 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+
                 if(username.getText().toString().equals("") || pwd.getText().toString().equals("")){
                     Snackbar.make(coordinatorLayout,"Non hai inserito i dati richiesti",Snackbar.LENGTH_LONG).show();
-                    return;
-                }
+                    return ;}
+                else{
+
+                    if(id_setted) { //così non devo sempre interrogare il server se ho l'id fatto per verificare che i dati siano corretti
+
+                        HashMap<String, String> userData;
+                        userData = SQL.getUserDetails(ID);
+
+                        if(userData.get("password") != null && userData.get("username")!= null) {
+
+                            if (userData.get("password").equals(pwd.getText().toString()) && userData.get("username").equals(username.getText().toString()))
+                                logged = true;
+                            else {
+                                Snackbar.make(coordinatorLayout, "I dati inseriti sono errati", Snackbar.LENGTH_LONG).show();
+                                return;
+                            }
+                        }
+                        else {
+                        Snackbar.make(coordinatorLayout, "I dati inseriti sono errati", Snackbar.LENGTH_LONG).show();
+                        return;
+                        }
+                    }
 
 
-                bundle= new Bundle();
-                bundle.putBoolean("ID_SETTED",id_setted);
-                bundle.putDouble("LAT",latitudeGPS);
-                bundle.putDouble("LNG",longitudeGPS);
-                bundle.putString("USERNAME",username.getText().toString());
-                bundle.putString("PASSWORD",pwd.getText().toString());
-                bundle.putString("TIPO","Entrata");
-                Intent i = new Intent(LoginActivity.this,Causali.class);
-                i.putExtras(bundle);
-                startActivity(i);
-                finish();
+
+
+                    bundle= new Bundle();
+                    bundle.putBoolean("ID_SETTED",id_setted);
+                    bundle.putDouble("LAT",latitudeGPS);
+                    bundle.putDouble("LNG",longitudeGPS);
+                    bundle.putString("USERNAME",username.getText().toString());
+                    bundle.putString("PASSWORD",pwd.getText().toString());
+                    bundle.putString("TIPO","Entrata");
+                    bundle.putString("CLOCK",textClock.toString());
+                    bundle.putLong("CLOCK_SECOND",manager.getTimeinsec());
+                    bundle.putBoolean("LOGGED",logged);
+                    Intent i = new Intent(LoginActivity.this,Causali.class);
+                    i.putExtras(bundle);
+                    startActivity(i);
+                   }
             }
         });
 
@@ -130,19 +161,46 @@ public class LoginActivity extends AppCompatActivity {
                     Snackbar.make(coordinatorLayout,"Non hai inserito i dati richiesti",Snackbar.LENGTH_LONG).show();
                     return;
                 }
+                else{
+
+                    if(id_setted) {
+
+                        HashMap<String, String> userData;
+                        userData = SQL.getUserDetails(ID);
+
+                        if(userData.get("password") != null && userData.get("username")!= null)
+                            if(userData.get("password") != null && userData.get("username")!= null) {
+
+                                if (userData.get("password") == pwd.getText().toString() && userData.get("username") == username.getText().toString())
+                                    logged = true;
+                                else {
+                                    Snackbar.make(coordinatorLayout, "I dati inseriti sono errati", Snackbar.LENGTH_LONG).show();
+                                    return;
+                                }
+                            }
+                            else {
+                                Snackbar.make(coordinatorLayout, "I dati inseriti sono errati", Snackbar.LENGTH_LONG).show();
+                                return;
+                            }
+                    }
 
 
-                bundle= new Bundle();
-                bundle.putBoolean("ID_SETTED",id_setted);
-                bundle.putDouble("LAT",latitudeGPS);
-                bundle.putDouble("LNG",longitudeGPS);
-                bundle.putString("USERNAME",username.getText().toString());
-                bundle.putString("PASSWORD",pwd.getText().toString());
-                bundle.putString("TIPO","Uscita");
-                Intent i = new Intent(LoginActivity.this,Causali.class);
-                i.putExtras(bundle);
-                startActivity(i);
-                finish();
+
+
+                    bundle= new Bundle();
+                    bundle.putBoolean("ID_SETTED",id_setted);
+                    bundle.putDouble("LAT",latitudeGPS);
+                    bundle.putDouble("LNG",longitudeGPS);
+                    bundle.putString("USERNAME",username.getText().toString());
+                    bundle.putString("PASSWORD",pwd.getText().toString());
+                    bundle.putString("TIPO","Uscita");
+                    bundle.putString("CLOCK",textClock.toString());
+                    bundle.putLong("CLOCK_SECOND",manager.getTimeinsec());
+                    bundle.putBoolean("LOGGED",logged);
+                    Intent i = new Intent(LoginActivity.this,Causali.class);
+                    i.putExtras(bundle);
+                    startActivity(i);
+                    }
             }
         });
         statistiche.setOnClickListener(new OnClickListener() {
@@ -154,18 +212,41 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
 
+                else{
 
-                bundle= new Bundle();
-                bundle.putBoolean("ID_SETTED",id_setted);
-                bundle.putDouble("LAT",latitudeGPS);
-                bundle.putDouble("LNG",longitudeGPS);
-                bundle.putString("USERNAME",username.getText().toString());
-                bundle.putString("PASSWORD",pwd.getText().toString());
-                bundle.putString("TIPO","Entrata");
+                    if(id_setted) {
+
+                        HashMap<String, String> userData;
+                        userData = SQL.getUserDetails(ID);
+
+                        if(userData.get("password") != null && userData.get("username")!= null)
+                            if(userData.get("password") != null && userData.get("username")!= null) {
+
+                                if (userData.get("password") == pwd.getText().toString() && userData.get("username") == username.getText().toString())
+                                    logged = true;
+                                else {
+                                    Snackbar.make(coordinatorLayout, "I dati inseriti sono errati", Snackbar.LENGTH_LONG).show();
+                                    return;
+                                }
+                            }
+                            else {
+                                Snackbar.make(coordinatorLayout, "I dati inseriti sono errati", Snackbar.LENGTH_LONG).show();
+                                return;
+                            }
+                    }
+
+
+
+                    bundle= new Bundle();
+                    bundle.putBoolean("ID_SETTED",id_setted);
+                    bundle.putString("USERNAME",username.getText().toString());
+                    bundle.putString("PASSWORD",pwd.getText().toString());
+                    bundle.putBoolean("LOGGED",logged);
+
                 Intent i = new Intent(LoginActivity.this,Report.class);
                 i.putExtras(bundle);
                 startActivity(i);
-                finish();
+               }
             }
         });
 

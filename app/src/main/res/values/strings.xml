@@ -20,5 +20,6 @@
     <string name="title_activity_splash_screen">SplashScreen</string>
     <string name="title_activity_causali">Causali</string>
     <string name="title_activity_report">Report</string>
-
+    <string name="explanation">Hai bisogno di comunicare qualcosa riguardo la tua timbratura?\n\nIn caso negativo lascia tutto in bianco</string>
+    <string name="explanation_hint">Digita qui la tua comunicazione in massimo 500 caratteri</string>
 </resources>

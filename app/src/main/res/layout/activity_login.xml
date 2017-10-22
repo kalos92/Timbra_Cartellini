@@ -49,6 +49,7 @@
         android:textColor="@color/text"
         android:textColorHint="@color/hint"
         android:padding="10dp"
+        android:inputType="textPassword"
 
 
         />
