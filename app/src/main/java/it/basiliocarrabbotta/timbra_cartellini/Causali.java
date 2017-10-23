@@ -33,9 +33,7 @@ public class Causali extends AppCompatActivity implements TimerObserver {
     private CoordinatorLayout coordinatorLayout;
     private ProgressDialog pDialog;
     private SessionManager manager;
-    private SQLiteHandler SQL;
-    private static final String TAG = Causali.class.getSimpleName();
-    private static final int LONG_DELAY = 3500;
+
 
 
     @Override
@@ -48,7 +46,7 @@ public class Causali extends AppCompatActivity implements TimerObserver {
         manager = new SessionManager(getBaseContext());
         bundle = getIntent().getExtras();
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_causali) ;
-        SQL = new SQLiteHandler(getBaseContext());
+
 
         descrizione = (EditText) findViewById(R.id.descrizione_causa);
 
@@ -57,24 +55,11 @@ public class Causali extends AppCompatActivity implements TimerObserver {
             @Override
             public void onClick(View view) {
                 if(bundle!=null){
-                boolean logged = bundle.getBoolean("LOGGED");
-                if(logged){
+
                     inviaDati(bundle.getDouble("LAT"),bundle.getDouble("LNG"),bundle.getString("USERNAME"),bundle.getString("PASSWORD"),bundle.getString("TIPO"),bundle.getString("CLOCK"),bundle.getLong("CLOCK_SENCOND"));
 
                 }
-                else if(!logged) { //devo controllare se è tutto giusto sul server
-                    if(requestID(bundle.getString("USERNAME"), bundle.getString("PASSWORD")))
-                        inviaDati(bundle.getDouble("LAT"), bundle.getDouble("LNG"), bundle.getString("USERNAME"), bundle.getString("PASSWORD"), bundle.getString("TIPO"), bundle.getString("CLOCK"), bundle.getLong("CLOCK_SENCOND"));
-                    else {
-                        Snackbar.make(coordinatorLayout, "I dati inseriti sono errati", Snackbar.LENGTH_LONG).show();
-                        Intent data = new Intent(Causali.this,LoginActivity.class);
-                        data.putExtra("Lat",bundle.getDouble("LAT"));
-                        data.putExtra("Lng",bundle.getBundle("LNG"));
-                        startActivity(data);
-                        finish();
-                        }
-                        }
-                }
+
             else{
                     Snackbar.make(coordinatorLayout, "Qualcosa è andato storto", Snackbar.LENGTH_LONG).show();
                     Intent data = new Intent(Causali.this,SplashScreen.class);
@@ -86,82 +71,7 @@ public class Causali extends AppCompatActivity implements TimerObserver {
         });
     }
 
-    public boolean requestID(final String username, final String password){
-        String tag_string_req = "req_login";
 
-        pDialog = ProgressDialog.show(this,"Invio dati","Sto controllando i tuoi dati per il login", true);
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConfig.URL_REQUEST_ID, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-
-
-
-
-                try {
-
-                    JSONObject jObj = new JSONObject(response);
-                    boolean error = jObj.getBoolean("error");
-
-                    if (!error) {
-                        // user successfully logged in
-                        // Create login session
-                        String id = jObj.getString("id");
-
-                        manager.setID(id);
-
-                        // Inserting row in users table
-                        SQL.addUser(id, username, password);
-                        Snackbar.make(coordinatorLayout, "Login Accettato", Snackbar.LENGTH_LONG).show();
-                        pDialog.dismiss();
-                        // Launch main activity
-
-                    } else {
-                        String errorMsg = jObj.getString("error_msg");
-                        Snackbar.make(coordinatorLayout, errorMsg, Snackbar.LENGTH_LONG).show();
-                        pDialog.dismiss();
-                    }
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                    pDialog.dismiss();
-                }
-
-            }
-            }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("abd", "Error: "
-                        + ">>" + error.getLocalizedMessage()
-                        + ">>" + error.getCause()
-                        + ">>" + error.getMessage());
-                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
-                pDialog.dismiss();
-
-
-            }
-        }){
-
-            @Override
-            protected Map<String, String> getParams() {
-                // Posting parameters to login url
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("username", username);
-                params.put("password", password);
-
-                return params;
-            }
-
-        };
-
-
-        AppController.getInstance().addToRequestQueue(stringRequest, tag_string_req);
-        pDialog.dismiss();
-
-        return true;
-    }
 
     public void inviaDati(final Double LAT, final Double LNG, final String username, final String password, final String tipo, final String clock,final Long Clock_second){
 

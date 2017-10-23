@@ -11,6 +11,9 @@ public class AppConfig {
 
 
     public static String URL_REQUEST_ID = "http://www.basiliocarrabbotta.it/timbratura/request_id.php";
+
+    public static String URL_SAVE_HASH ="http://www.basiliocarrabbotta.it/timbratura/save_hash.php";
+
 }
 
 

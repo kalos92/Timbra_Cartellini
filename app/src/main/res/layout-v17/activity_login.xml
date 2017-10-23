@@ -16,57 +16,21 @@
         android:layout_marginTop="10dp"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
         android:textSize="20sp"
         android:textColor="@color/hint"
         android:textAlignment="center"
         android:format24Hour="dd.MM.yyyy '-' HH:mm:ss "/>
-    <EditText
-        android:id="@+id/editext_username"
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_margin="50dp"
-        android:hint="@string/prompt_username"
-        android:background="@color/blue_white"
-        android:singleLine="true"
-        android:maxLines="1"
-        android:textColor="@color/text"
-        android:textColorHint="@color/hint"
-        android:padding="10dp"
-        android:maxLength="32"
-        />
-
-    <EditText
-        android:id="@+id/editext_password"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
-        android:layout_below="@id/editext_username"
-        android:hint="@string/prompt_password"
-        android:background="@color/blue_white"
-        android:singleLine="true"
-        android:maxLines="1"
-        android:textColor="@color/text"
-        android:textColorHint="@color/hint"
-        android:padding="10dp"
-        android:maxLength="32"
-
-
-
-        />
-
-    <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
-        android:layout_marginTop="10dp"
-        android:layout_below="@id/editext_password"
-        android:id="@+id/nome_scuola"
-        android:entries="@array/Nome_Scuola">
-
-    </Spinner>
+        android:layout_height="200dp"
+        android:layout_below="@id/clock"
+        android:layout_centerHorizontal="true"
+        tools:context="com.example.mapwithmarker.MapsMarkerActivity" />
 
     <Button
         android:id="@+id/btnEntra"
@@ -74,8 +38,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
-        android:layout_marginTop="35dp"
-        android:layout_below="@id/nome_scuola"
+        android:layout_marginTop="15dp"
+        android:layout_below="@id/map"
         android:clickable="true"
         android:background="@drawable/ripple"
         android:text="@string/action_entra"

@@ -43,6 +43,13 @@ import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -52,19 +59,16 @@ import static android.Manifest.permission.READ_CONTACTS;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements OnMapReadyCallback {
 
 
     // UI references.
 
     private double longitudeGPS, latitudeGPS;
-    private TextView longitudeValueGPS, latitudeValueGPS;
-    private Button timbra_entrata, timbra_uscita, statistiche;
     private SessionManager manager;
     private CoordinatorLayout coordinatorLayout;
     private int time;
     private TextClock textClock;
-    private EditText username,pwd;
     private String ID;
     private Boolean id_setted = false;
     private Bundle bundle;
@@ -82,24 +86,24 @@ public class LoginActivity extends AppCompatActivity {
 
             latitudeGPS = (double) extra.get("Lat");
             longitudeGPS = (double) extra.get("Lng");
-
         }
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
         SQL = new SQLiteHandler(getBaseContext());
         manager = new SessionManager(getBaseContext());
-        timbra_entrata = (Button) findViewById(R.id.btnEntra);
-        timbra_uscita = (Button) findViewById(R.id.btnEsci);
-        statistiche = (Button) findViewById(R.id.btnStatiche);
+        Button timbra_entrata = (Button) findViewById(R.id.btnEntra);
+        Button timbra_uscita = (Button) findViewById(R.id.btnEsci);
+        Button statistiche = (Button) findViewById(R.id.btnStatiche);
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator);
-        username = (EditText) findViewById(R.id.editext_username);
-        pwd = (EditText) findViewById(R.id.editext_password);
+
         textClock = (TextClock) findViewById(R.id.clock);
-        longitudeValueGPS = (TextView) findViewById(R.id.longitudeValueGPS);
-        latitudeValueGPS = (TextView) findViewById(R.id.latitudeValueGPS);
+
+        TextView longitudeValueGPS = (TextView) findViewById(R.id.longitudeValueGPS);
+        TextView latitudeValueGPS = (TextView) findViewById(R.id.latitudeValueGPS);
 
         ID = manager.getID();
-
-        id_setted = ID != null;
-
         longitudeValueGPS.setText(String.valueOf(longitudeGPS));
         latitudeValueGPS.setText(String.valueOf(latitudeGPS));
 
@@ -107,146 +111,50 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
-                if(username.getText().toString().equals("") || pwd.getText().toString().equals("")){
-                    Snackbar.make(coordinatorLayout,"Non hai inserito i dati richiesti",Snackbar.LENGTH_LONG).show();
-                    return ;}
-                else{
-
-                    if(id_setted) { //così non devo sempre interrogare il server se ho l'id fatto per verificare che i dati siano corretti
-
-                        HashMap<String, String> userData;
-                        userData = SQL.getUserDetails(ID);
-
-                        if(userData.get("password") != null && userData.get("username")!= null) {
-
-                            if (userData.get("password").equals(pwd.getText().toString()) && userData.get("username").equals(username.getText().toString()))
-                                logged = true;
-                            else {
-                                Snackbar.make(coordinatorLayout, "I dati inseriti sono errati", Snackbar.LENGTH_LONG).show();
-                                return;
-                            }
-                        }
-                        else {
-                        Snackbar.make(coordinatorLayout, "I dati inseriti sono errati", Snackbar.LENGTH_LONG).show();
-                        return;
-                        }
-                    }
-
-
-
-
                     bundle= new Bundle();
                     bundle.putBoolean("ID_SETTED",id_setted);
                     bundle.putDouble("LAT",latitudeGPS);
                     bundle.putDouble("LNG",longitudeGPS);
-                    bundle.putString("USERNAME",username.getText().toString());
-                    bundle.putString("PASSWORD",pwd.getText().toString());
+                    bundle.putString("USERNAME",SQL.getUserDetails(ID).get("username"));
+                    bundle.putString("PASSWORD",SQL.getUserDetails(ID).get("password"));
                     bundle.putString("TIPO","Entrata");
                     bundle.putString("CLOCK",textClock.toString());
                     bundle.putLong("CLOCK_SECOND",manager.getTimeinsec());
-                    bundle.putBoolean("LOGGED",logged);
+
                     Intent i = new Intent(LoginActivity.this,Causali.class);
                     i.putExtras(bundle);
                     startActivity(i);
                    }
-            }
+
         });
 
         timbra_uscita.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if(username.getText().toString().equals("") || pwd.getText().toString().equals("")){
-                    Snackbar.make(coordinatorLayout,"Non hai inserito i dati richiesti",Snackbar.LENGTH_LONG).show();
-                    return;
-                }
-                else{
-
-                    if(id_setted) {
-
-                        HashMap<String, String> userData;
-                        userData = SQL.getUserDetails(ID);
-
-                        if(userData.get("password") != null && userData.get("username")!= null)
-                            if(userData.get("password") != null && userData.get("username")!= null) {
-
-                                if (userData.get("password") == pwd.getText().toString() && userData.get("username") == username.getText().toString())
-                                    logged = true;
-                                else {
-                                    Snackbar.make(coordinatorLayout, "I dati inseriti sono errati", Snackbar.LENGTH_LONG).show();
-                                    return;
-                                }
-                            }
-                            else {
-                                Snackbar.make(coordinatorLayout, "I dati inseriti sono errati", Snackbar.LENGTH_LONG).show();
-                                return;
-                            }
-                    }
-
-
-
-
                     bundle= new Bundle();
                     bundle.putBoolean("ID_SETTED",id_setted);
                     bundle.putDouble("LAT",latitudeGPS);
                     bundle.putDouble("LNG",longitudeGPS);
-                    bundle.putString("USERNAME",username.getText().toString());
-                    bundle.putString("PASSWORD",pwd.getText().toString());
+                    bundle.putString("USERNAME",SQL.getUserDetails(ID).get("username"));
+                    bundle.putString("PASSWORD",SQL.getUserDetails(ID).get("password"));
                     bundle.putString("TIPO","Uscita");
                     bundle.putString("CLOCK",textClock.toString());
                     bundle.putLong("CLOCK_SECOND",manager.getTimeinsec());
-                    bundle.putBoolean("LOGGED",logged);
+
                     Intent i = new Intent(LoginActivity.this,Causali.class);
                     i.putExtras(bundle);
                     startActivity(i);
-                    }
+
             }
         });
         statistiche.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if(username.getText().toString().equals("") || pwd.getText().toString().equals("")){
-                    Snackbar.make(coordinatorLayout,"Non hai inserito i dati richiesti",Snackbar.LENGTH_LONG).show();
-                    return;
-                }
-
-                else{
-
-                    if(id_setted) {
-
-                        HashMap<String, String> userData;
-                        userData = SQL.getUserDetails(ID);
-
-                        if(userData.get("password") != null && userData.get("username")!= null)
-                            if(userData.get("password") != null && userData.get("username")!= null) {
-
-                                if (userData.get("password") == pwd.getText().toString() && userData.get("username") == username.getText().toString())
-                                    logged = true;
-                                else {
-                                    Snackbar.make(coordinatorLayout, "I dati inseriti sono errati", Snackbar.LENGTH_LONG).show();
-                                    return;
-                                }
-                            }
-                            else {
-                                Snackbar.make(coordinatorLayout, "I dati inseriti sono errati", Snackbar.LENGTH_LONG).show();
-                                return;
-                            }
-                    }
-
-
-
-                    bundle= new Bundle();
-                    bundle.putBoolean("ID_SETTED",id_setted);
-                    bundle.putString("USERNAME",username.getText().toString());
-                    bundle.putString("PASSWORD",pwd.getText().toString());
-                    bundle.putBoolean("LOGGED",logged);
-
-                Intent i = new Intent(LoginActivity.this,Report.class);
-                i.putExtras(bundle);
+                Intent i = new Intent(LoginActivity.this,SplashScreen.class);
                 startActivity(i);
-               }
+
             }
         });
 
@@ -255,13 +163,13 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        // Add a marker in Sydney, Australia,
+        // and move the map's camera to the same location.
+        LatLng sydney = new LatLng( latitudeGPS,longitudeGPS);
+        googleMap.addMarker(new MarkerOptions().position(sydney).title("Ti trovi circa qui"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney,17.5f));
 
-
-
-
-
-
-
-
-
+    }
 }

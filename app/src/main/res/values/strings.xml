@@ -6,17 +6,13 @@
     <string name="prompt_password">Password</string>
     <string name="action_entra">Timbra entrata</string>
     <string name="action_uscita">Timbra uscita</string>
-    <string name="action_statistiche">Visualizza Riepilogo</string>
+    <string name="action_statistiche">Ricalcola posizione</string>
     <string name="error_incorrect_password">Password non corretta</string>
     <string name="error_field_required">Questo campo non può essere lasciato vuoto</string>
     <string name="username_errato">L\'username inserito non esiste</string>
-    <string-array name="Nome_Scuola">
-        <item>Politecnico di Torino</item>
-        <item>San Francesco d\'Assisi - Torino</item>
-        <item>Scuola Media Colombo - Torino</item>
-        <item>Scuola Media Random - Messina</item>
+    <string name="login">Login</string>
+    <string name="contratto">Premendo su Login verrà inviato anche l\'IMEI cifrato del tuo dispotivo, non sarà possibile risalire al tuo vero IMEI e non verrà mai pubblicato. Sarà utilizzato solo per scopi di controllo. </string>
 
-    </string-array>
     <string name="title_activity_splash_screen">SplashScreen</string>
     <string name="title_activity_causali">Causali</string>
     <string name="title_activity_report">Report</string>

@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import java.util.HashMap;
+import java.util.SimpleTimeZone;
 
 /**
  * Created by Kalos on 29/09/2017.
@@ -31,6 +32,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
     private static final String KEY_ID = "ID";
     private static final String KEY_NAME = "USERNAME";
     private static final String KEY_PASSWORD = "PASSWORD";
+    private static final String KEY_HASH = "HASH";
 
 
     public SQLiteHandler(Context context) {
@@ -43,10 +45,12 @@ public class SQLiteHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_LOGIN_TABLE = "CREATE TABLE "
                 + TABLE_USER + "("
-                + KEY_ID + " TEXT,"
+                + KEY_ID + " TEXT PRIMARY KEY,"
                 + KEY_NAME + " TEXT,"
-                + KEY_PASSWORD + " TEXT UNIQUE" + ")";
+                + KEY_PASSWORD + " TEXT,"
+                + KEY_HASH +"TEXT"+")";
         db.execSQL(CREATE_LOGIN_TABLE);
+
 
         Log.d(TAG, "Database tables created");
     }
@@ -78,6 +82,22 @@ public class SQLiteHandler extends SQLiteOpenHelper {
         db.close(); // Closing database connection
 
         Log.d(TAG, "New user inserted into sqlite: " + id);
+    }
+
+    public void AddHash(String ID, String hash){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_HASH, hash); //hash
+        String selection = KEY_ID +" LIKE ?";
+        String[] selectionArgs = {ID};
+        db.update(TABLE_USER,values,selection,selectionArgs);
+
+
+        db.close(); // Closing database connection
+
+        Log.d(TAG, "hash is saved for"+ ID +" hash = "+hash );
+
     }
 
     /**

@@ -54,17 +54,6 @@
 
         />
 
-    <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
-        android:layout_marginTop="10dp"
-        android:layout_below="@id/editext_password"
-        android:id="@+id/nome_scuola"
-        android:entries="@array/Nome_Scuola">
-
-    </Spinner>
 
     <Button
         android:id="@+id/btnEntra"
@@ -74,7 +63,7 @@
         android:layout_marginRight="50dp"
         android:layout_marginTop="50dp"
 
-        android:layout_below="@id/nome_scuola"
+        android:layout_below="@id/editext_password"
         android:background="@color/colorPrimaryDark"
         android:text="@string/action_entra"
         android:textAllCaps="false"

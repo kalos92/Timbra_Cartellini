@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/coordinator_login">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        >
+
+
+    <EditText
+        android:id="@+id/editext_username"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_margin="50dp"
+        android:hint="@string/prompt_username"
+        android:background="@color/blue_white"
+        android:singleLine="true"
+        android:maxLines="1"
+        android:textColor="@color/text"
+        android:textColorHint="@color/hint"
+        android:padding="10dp"
+        android:maxLength="32"
+        />
+
+    <EditText
+        android:id="@+id/editext_password"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_below="@id/editext_username"
+        android:hint="@string/prompt_password"
+        android:background="@color/blue_white"
+        android:singleLine="true"
+        android:maxLines="1"
+        android:textColor="@color/text"
+        android:textColorHint="@color/hint"
+        android:padding="10dp"
+        android:maxLength="32"
+        />
+
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginTop="35dp"
+            android:layout_below="@id/editext_password"
+            android:clickable="true"
+            android:background="@drawable/ripple"
+            android:text="@string/login"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btnLogin"
+            android:text="@string/contratto"
+            android:layout_marginLeft="@dimen/activity_vertical_margin"
+            android:layout_marginRight="@dimen/activity_vertical_margin"
+            android:layout_marginTop="35dp"
+            android:textSize="18sp"
+            android:textColor="@color/text"
+            android:textAlignment="center"/>
+
+
+    </RelativeLayout>
+
+
+</android.support.design.widget.CoordinatorLayout>
