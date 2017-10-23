@@ -154,6 +154,7 @@ public class LoginActivity extends AppCompatActivity implements OnMapReadyCallba
 
                 Intent i = new Intent(LoginActivity.this,SplashScreen.class);
                 startActivity(i);
+                //Da qui
 
             }
         });
